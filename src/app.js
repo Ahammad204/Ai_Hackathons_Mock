@@ -1,8 +1,8 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
-import rateLimit from "express-rate-limit";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import healthRoutes from "./routes/health.routes.js";
 import ticketRoutes from "./routes/ticket.routes.js";
@@ -21,16 +21,6 @@ app.use(express.urlencoded({ extended: false, limit: "10kb" }));
 
 // Compression
 app.use(compression());
-
-// Rate limiting — 100 requests per 15-minute window
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: true, message: "Too many requests, please try again later" },
-});
-app.use(limiter);
 
 // Request logging
 app.use((req, _res, next) => {
